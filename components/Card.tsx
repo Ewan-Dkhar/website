@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Card as ShadcnCard } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
+import { sanitizeHTML } from '~/lib/sanitize';
 
 export interface CardProps {
   title: string;
@@ -88,7 +89,7 @@ const CardBody = ({
         data-test='card-body'
       >
         {extended ? (
-          <span dangerouslySetInnerHTML={{ __html: body }} />
+          <span dangerouslySetInnerHTML={{ __html: sanitizeHTML(body) }} />
         ) : (
           <TextTruncate element='span' line={3} text={body} />
         )}
