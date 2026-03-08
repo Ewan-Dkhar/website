@@ -354,32 +354,32 @@ const ToolingTable = ({
                         onClick={() => openModal(tool)}
                       >
                         <td className='p-2 relative'>
-                          {bowtieReport && (
-                            <div className='absolute top-0 right-0 m-2 text-sm text-gray-600 dark:text-gray-300 flex items-center'>
-                              <span>Bowtie:</span>
-                              {bowtieData ? (
-                                <a
-                                  href={`https://bowtie.report/#/implementations/${bowtieData.id}`}
-                                  target='_blank'
-                                  rel='noopener noreferrer'
-                                  onClick={(event) => event.stopPropagation()}
-                                  title='See at Bowtie'
-                                  className='ml-1'
-                                >
-                                  <OutLinkIcon className='fill-none stroke-current w-5 h-5 stroke-2' />
-                                </a>
-                              ) : (
-                                <InfoIcon className='fill-none stroke-current w-5 h-5 stroke-2' />
-                              )}
-                            </div>
-                          )}
-                          <div className='flex justify-between items-center'>
+                          <div className='flex justify-between items-baseline'>
                             <div className='font-medium'>
                               {tool.name}
                               {tool.status === 'obsolete' && (
                                 <Tag intent='error'>{tool.status}</Tag>
                               )}
                             </div>
+                            {bowtieReport && (
+                              <div className='m-2 text-sm text-gray-600 dark:text-gray-300 flex items-center'>
+                                <span>Bowtie:</span>
+                                {bowtieData ? (
+                                  <a
+                                    href={`https://bowtie.report/#/implementations/${bowtieData.id}`}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    onClick={(event) => event.stopPropagation()}
+                                    title='See at Bowtie'
+                                    className='ml-1'
+                                  >
+                                    <OutLinkIcon className='fill-none stroke-current w-5 h-5 stroke-2' />
+                                  </a>
+                                ) : (
+                                  <InfoIcon className='fill-none stroke-current w-5 h-5 stroke-2' />
+                                )}
+                              </div>
+                            )}
                           </div>
                           <div className='text-sm text-gray-600 dark:text-gray-300 mt-1'>
                             Languages: {tool.languages?.join(', ')}
