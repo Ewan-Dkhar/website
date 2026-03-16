@@ -5,22 +5,29 @@ export default function slugifyMarkdownHeadline(
 ): string {
   const FRAGMENT_REGEX = /\[#(?<slug>(\w|-|_)*)\]/g;
   if (!markdownChildren) return '';
-  if (typeof markdownChildren === 'string')
-    return slugify(markdownChildren, { lower: true, trim: true });
-  const metaSlug = markdownChildren.reduce((acc, child) => {
-    if (acc) return acc;
-    if (typeof child !== 'string') return null;
-    const fragment = FRAGMENT_REGEX.exec(child);
-    if (!fragment) return null;
-    const slug = fragment?.groups?.slug;
-    return slug || null;
-  }, null);
+
+  const collectStrings = (node: any): string[] => {
+    if (node == null) return [];
+    if (typeof node === 'string') return [node];
+    if (Array.isArray(node)) return node.flatMap(collectStrings);
+    if (typeof node === 'object' && node.props && node.props.children)
+      return collectStrings(node.props.children);
+    return [];
+  };
+
+  const strings = collectStrings(markdownChildren);
+
+  const metaSlug = strings
+    .map((s) => {
+      const fragment = FRAGMENT_REGEX.exec(s);
+      return fragment?.groups?.slug || null;
+    })
+    .find(Boolean);
+
   if (metaSlug) return metaSlug;
 
-  const joinedChildren = markdownChildren
-    .filter((child) => typeof child === 'string')
+  const joinedChildren = strings
     .map((string) => string.replace(FRAGMENT_REGEX, ''))
     .join(' ');
-  const slug = slugify(joinedChildren, { lower: true, trim: true });
-  return slug;
+  return slugify(joinedChildren, { lower: true, trim: true });
 }
